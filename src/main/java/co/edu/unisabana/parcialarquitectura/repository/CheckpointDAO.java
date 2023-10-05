@@ -10,24 +10,19 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @AllArgsConstructor
-public class CheckpointDAO implements CheckpointPort {
+public class CheckpointDAO{
 
   private CheckpointRepository checkpointRepository;
 
-
-  @Override
   public void saveCheckout(Checkout checkout) {
     checkpointRepository.save(CheckpointEntity.fromCheckout(checkout));
   }
 
-  @Override
   public Checkin findLastCheckin(String driver, String facility) {
     Optional<CheckpointEntity> result = checkpointRepository.findFirstByDriverAndFacilityAndFinalizedIsFalse(driver,
         facility);
     return result.map(CheckpointEntity::toCheckin).orElse(null);
   }
-
-  @Override
   public void finishCheckin(Checkin checkin) {
     CheckpointEntity checkpoint = checkpointRepository.findById(checkin.getId()).get();
     checkpoint.setFinalized(true);
