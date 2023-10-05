@@ -1,0 +1,1 @@
+$ docker run --name parcial -p 3307:3306 -e MYSQL_ROOT_PASSWORD=admin -d mysql
